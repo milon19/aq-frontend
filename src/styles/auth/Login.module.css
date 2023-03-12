@@ -1,0 +1,9 @@
+.loginPage{
+    height: 85vh;
+}
+
+.githubButton{
+    margin: 4px;
+    height: 30px;
+    aspect-ratio: 1;
+}

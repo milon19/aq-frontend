@@ -1,0 +1,44 @@
+import { createSlice, createAsyncThunk} from '@reduxjs/toolkit';
+import axios from "axios";
+
+export type KanyeState = {
+  data: { quote: string };
+  pending: boolean;
+  error: boolean;
+};
+
+const initialState: KanyeState = {
+  data: { quote: 'click that button' },
+  pending: false,
+  error: false,
+};
+
+export const getKanyeQuote = createAsyncThunk('kanye/kanyeQuote', async () => {
+  const response = await axios.get('https://api.kanye.rest/');
+  return response.data;
+});
+
+export const kanyeSlice = createSlice({
+  name: 'kanye',
+  initialState,
+  reducers: {
+  },
+  extraReducers: builder => {
+    builder
+      .addCase(getKanyeQuote.pending, state => {
+        state.pending = true;
+      })
+      .addCase(getKanyeQuote.fulfilled, (state, { payload }) => {
+        state.pending = false;
+        state.data = payload;
+      })
+      .addCase(getKanyeQuote.rejected, state => {
+        state.pending = false;
+        state.error = true;
+      });
+  },
+});
+
+// export const selectKanye = (state: RootState) => state.kanyeQuote;
+
+export default kanyeSlice.reducer;
